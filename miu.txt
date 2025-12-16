@@ -1,0 +1,27 @@
+[{1}, {2}, {3}, {4}, {5}]
+  0    1    2    3    4
+
+lenght = 5;
+
+startIdx = 3;
+
+const [thumbImages, setThumbImages] = useState([]);
+
+  useEffect(() => {
+    const length = images.length; // 5
+    const updatedImages = [{5}, {1}, {2}];
+    let ptr = 3;
+
+
+
+
+    while (updatedImages.length < 3) {
+      if (ptr === length) {
+        ptr = 0;
+      } else {
+        updatedImages.push(images[ptr]);
+        ptr++;
+      }
+    }
+    setThumbImages(updatedImages);
+  }, [startIdx]);
