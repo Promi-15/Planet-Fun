@@ -33,6 +33,7 @@ const Hero = () => {
   const [selectedImageId, setSelectedImageId] = useState(1);
   const [startIdx, setStartIdx] = useState(0);
   const [thumbImages, setThumbImages] = useState([]);
+  const [isBgChanging, setIsBgChanging] = useState(false);
 
   useEffect(() => {
     const length = images.length;
@@ -51,19 +52,46 @@ const Hero = () => {
     setThumbImages(updatedImages);
   }, [startIdx]);
 
-  // const arr = [1, 2, 3, 4];
-  // const result = arr.filter((a) => a > 3);
-  // //result = 4;
-  // result = [4];
+  const handleImageSelect = (id) => {
+    setIsBgChanging(true);
+    setSelectedImageId(id);
+
+    setTimeout(() => {
+      setIsBgChanging(false);
+    }, 800);
+  };
+  const handleArrowClick = (direction) => {
+    setIsBgChanging(true);
+    if (direction === "left") {
+      setStartIdx((prevState) => {
+        if (prevState < images.length - 1) {
+          return prevState + 1;
+        } else return 0;
+      });
+    } else {
+      setStartIdx((prevState) => {
+        if (prevState === 0) {
+          return images.length - 1;
+        } else return prevState - 1;
+      });
+    }
+
+    setTimeout(() => {
+      setIsBgChanging(false);
+    }, 800);
+  };
 
   return (
     <div>
       <div
-        className="hero min-h-screen"
+        className={`hero min-h-screen transition-all duration-1000 ease-in-out ${
+          isBgChanging ? "opacity-0 scale-105" : "opacity-100 scale-100"
+        }`}
         style={{
           backgroundImage: `url(${
             images.filter((img) => img.id === selectedImageId)[0].src
           })`,
+          transition: "all 0.8s ease-in-out",
         }}
       >
         <div className="hero-overlay bg-black opacity-60"></div>
@@ -82,71 +110,38 @@ const Hero = () => {
               <li> Approximately 4.5 billion years old</li>
               <li>Fifth largest planet in our solar system</li>
             </ul>
-            <button className="button  py-2 px-5 w-40 rounded-2xl flex items-center justify-center gap-2 font-bold text-lg bg-black text-white hover:bg-white hover:text-black transition duration-300 group">
+            <button className="button  py-2 px-5 w-40 rounded-2xl flex items-center justify-center gap-2 border-2 border-white font-bold text-lg bg-black text-white hover:bg-white hover:text-black transition duration-300 group">
               See more{" "}
               <span>
                 <FaArrowRight className="hidden group-hover:inline-block transition-transform group-hover:translate-x-1" />
               </span>
             </button>
           </div>
-          <div className="flex justify-between gap-5 w-2/3 relative right-0 left-52 top-28">
+          <div className="flex justify-between gap-5 w-2/3 relative right-0 left-60 top-10">
             <button
-              onClick={() =>
-                setStartIdx((prevState) => {
-                  if (prevState < images.length - 1) {
-                    return prevState + 1;
-                  } else return 0;
-                })
-              }
-              className="text-white text-3xl"
+              onClick={() => handleArrowClick("left")}
+              className="text-white text-3xl hover:text-blue-300 transition-colors"
             >
               <FaArrowLeft />
             </button>
             {thumbImages.map((image) => (
-              <div key={image.id} className="h-64 w-80 shrink-0">
+              <div key={image.id} className="h-64 w-72 shrink-0">
                 <img
-                  onClick={() => setSelectedImageId(image.id)}
+                  onClick={() => handleImageSelect(image.id)}
                   src={image.src}
                   className={`h-full w-full ${
                     selectedImageId === image.id
                       ? "border-green-500 border-[3px]"
                       : "border-white border-2"
-                  } rounded-2xl object-cover`}
+                  } rounded-2xl object-cover cursor-pointer hover:scale-105 transition-transform duration-300`}
                   alt={image.alt}
                 />
               </div>
             ))}
-            {/* <div className="h-64 w-80 shrink-0">
-              <img
-                src="/public/images/jupiter.jpg"
-                className="h-full w-full border-2 border-white rounded-2xl object-cover"
-                alt="Earth"
-              />
-            </div>
-            <div className="h-64 w-80 shrink-0">
-              <img
-                src="/public/images/Mars.png"
-                className="h-full w-full border-2 border-white rounded-2xl object-cover"
-                alt="Earth"
-              />
-            </div> */}
-            {/* <div className="h-64 w-80 shrink-0">
-              <img
-                src="/public/images/earth.jpg"
-                className="h-full w-full border-2 border-white rounded-2xl object-cover"
-                alt="Earth"
-              />
-            </div> */}
 
             <button
-              onClick={() =>
-                setStartIdx((prevState) => {
-                  if (prevState === 0) {
-                    return images.length - 1;
-                  } else return prevState - 1;
-                })
-              }
-              className="text-white text-3xl"
+              onClick={() => handleArrowClick("right")}
+              className="text-white text-3xl hover:text-blue-300 transition-colors"
             >
               <FaArrowRight />
             </button>
