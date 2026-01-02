@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import Navbar from "./Navbar";
+
 
 const images = [
   {
@@ -136,8 +138,9 @@ const Hero = () => {
 
   return (
     <div>
+     
       <div
-        className={`hero min-h-screen transition-all duration-1000 ease-in-out ${
+        className={`hero min-h-screen transition-all duration-1000 ease-in-out relative ${
           isBgChanging ? "opacity-0 scale-105" : "opacity-100 scale-100"
         }`}
         style={{
@@ -145,7 +148,9 @@ const Hero = () => {
           transition: "all 0.8s ease-in-out",
         }}
       >
+        
         <div className="hero-overlay bg-black opacity-60"></div>
+         <Navbar/>
         <div className="absolute gap-10">
           <div className=" space-y-6 mx-10 w-full relative  text-center">
             <p className="text-5xl font-semibold text-white">
